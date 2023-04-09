@@ -11,6 +11,10 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   margin-bottom: 5px;
+
+  &:hover {
+    color: red;
+  }
 `;
 
 export const Button = styled.button`
