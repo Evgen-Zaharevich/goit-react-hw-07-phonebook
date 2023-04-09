@@ -2,8 +2,8 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContact } from 'redux/selectors';
-import { addContact } from 'redux/contactSlice';
+import { getContacts } from 'redux/selectors';
+import { addContacts } from 'redux/operations';
 import {
   FormField,
   ErrorMessage,
@@ -13,10 +13,12 @@ import {
 } from 'components/Form/Form.styled';
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContact);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
+  console.log(contacts);
 
   const addNewContact = newContact => {
+    console.log(newContact);
     const hasAlready = contacts.some(
       el => el.name.toLowerCase() === newContact.name.toLowerCase()
     );
@@ -25,14 +27,14 @@ export const ContactForm = () => {
       alert(`${newContact.name} is already in contacts.`);
       return;
     }
-    dispatch(addContact(newContact));
+    dispatch(addContacts(newContact));
   };
 
   return (
     <Formik
       initialValues={{
         name: '',
-        number: '',
+        phone: '',
       }}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
@@ -56,15 +58,15 @@ export const ContactForm = () => {
           <ErrorMessage name="name" component="p" />
         </FormField>
         <FormField>
-          Number
+          Phone
           <Field
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
-          <ErrorMessage name="number" component="p" />
+          <ErrorMessage name="phone" component="p" />
         </FormField>
         <Button type="submit">Add Contact</Button>
       </Form>
@@ -78,9 +80,9 @@ const schema = yup.object().shape({
     .min(2, 'To Short!')
     .max(30, 'To Long')
     .required('Required'),
-  number: yup
+  phone: yup
     .string()
     .min(7, 'To Short!')
-    .max(13, 'To Long')
+    .max(19, 'To Long')
     .required('Required'),
 });
