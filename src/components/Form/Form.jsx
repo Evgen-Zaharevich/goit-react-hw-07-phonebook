@@ -15,10 +15,8 @@ import {
 export const ContactForm = () => {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  console.log(contacts);
 
   const addNewContact = newContact => {
-    console.log(newContact);
     const hasAlready = contacts.some(
       el => el.name.toLowerCase() === newContact.name.toLowerCase()
     );
